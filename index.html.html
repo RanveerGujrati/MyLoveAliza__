@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Feelings</title>
+<style>
+body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:#ffeef6;font-family:'Shadows Into Light',cursive;overflow:hidden;}
+.book{width:800px;height:500px;perspective:2000px;position:relative;}
+.cover,.page{width:100%;height:100%;position:absolute;top:0;left:0;transform-origin:left center;transition:transform 1s ease;box-shadow:0 5px 15px rgba(0,0,0,0.3);border-radius:5px;overflow:hidden;}
+.cover img{width:100%;height:100%;object-fit:cover;}
+.page{background:#fffef8;z-index:5;padding:40px;box-sizing:border-box;line-height:1.8em;font-size:20px;}
+.page::before{content:'';position:absolute;top:0;left:40px;right:0;height:100%;background-image:repeating-linear-gradient(to bottom,transparent 0 26px,#d7eaff 26px,transparent 27px);opacity:.6;}
+.page.doodles::after{content:'❤';position:absolute;bottom:20px;right:30px;font-size:28px;color:#e91e63;opacity:0.6;}
+.controls{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:20px;}
+button{padding:8px 16px;border:none;border-radius:6px;background:#e91e63;color:white;cursor:pointer;font-size:16px;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="book" id="book">
+  <div class="cover">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAABmJLR0QA/wD/AP+gvaeTAAAgAElEQ…(truncated Base64 of your image)…" alt="Book Cover">
+  </div>
+  <div class="page doodles">My love, every morning I wake thinking of you. Your voice is my favorite song. I keep your laughter like a treasure.</div>
+  <div class="page">When nights are long, your texts are my light. I miss your warmth, your hand in mine, and your smile across the phone.</div>
+  <div class="page doodles">I promise to build our dreams with patience. Small steps, steady heart — I choose you every day, my dear Aliza.</div>
+  <div class="page">Every memory of you is a soft place to land. I collect them in my heart and carry them home to you, someday soon.</div>
+  <div class="page doodles">I love the way you say my name, the little jokes we share, the quiet moments. You are my calm and my adventure.</div>
+  <div class="page">No distance dulls my devotion. I write these lines to remind you — I am yours, now and for all tomorrows.</div>
+  <div class="page doodles">I daydream of the day I’ll see you and say everything I feel. Until then, please accept this notebook full of my heart.</div>
+  <div class="page">If love had a language, ours would be the simplest — kind, patient, and true. Thank you for being my forever inspiration. ❤️</div>
+</div>
+<div class="controls">
+  <button id="prev">⟨ Prev</button>
+  <button id="next">Next ⟩</button>
+</div>
+
+<!-- Page Turn Sound -->
+<audio id="pageSound" src="pageturn.mp3" preload="auto"></audio>
+
+<script>
+const pages=document.querySelectorAll('.page');
+const cover=document.querySelector('.cover');
+const pageSound=document.getElementById('pageSound');
+let current=0;
+
+function updateBook(){
+  if(current>0){
+    cover.style.transform='rotateY(-170deg)';
+  } else {
+    cover.style.transform='rotateY(0)';
+  }
+
+  pages.forEach((p,i)=>{
+    if(i<current-1){
+      p.style.transform='rotateY(-180deg)';
+      p.style.zIndex=i;
+    } else {
+      p.style.transform='rotateY(0)';
+      p.style.zIndex=pages.length-i;
+    }
+  });
+}
+
+document.getElementById('next').onclick=()=>{
+  if(current<pages.length){
+    pageSound.currentTime=0;
+    pageSound.play();
+    current++;
+    updateBook();
+  }
+};
+
+document.getElementById('prev').onclick=()=>{
+  if(current>0){
+    pageSound.currentTime=0;
+    pageSound.play();
+    current--;
+    updateBook();
+  }
+};
+</script>
+</body>
+</html>
